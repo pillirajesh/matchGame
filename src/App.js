@@ -249,7 +249,7 @@ const imagesList = [
 
 // Replace your code here
 class App extends Component {
-  state = {activeTabId: tabsList[0].tabId}
+  state = {activeTabId: tabsList[0].tabId, count: 59}
 
   getFilteredList = () => {
     const {activeTabId} = this.state
@@ -260,9 +260,33 @@ class App extends Component {
     return filteredList
   }
 
-  render() {
-    const filteredList = this.getFilteredList()
+  getChangeActiveTabId = tabId => {
+    const {activeTabId} = this.state
+    this.setState(prevState => ({
+      activeTabId: prevState.activeTabId !== tabId,
+    }))
+    console.log((activeTabId = tabsList.tabId))
+  }
 
+  clearTimer = () => {
+    const {count} = this.state
+    if (count === 0) {
+      clearInterval(this.timerId)
+    }
+  }
+
+  tick = () => {
+    this.setState(prevState => ({count: prevState.count - 1}))
+    this.clearTimer()
+  }
+
+  componentDidMount = () => {
+    this.timerId = setInterval(this.tick, 1000)
+  }
+
+  render() {
+    const {count} = this.state
+    const filteredList = this.getFilteredList()
     return (
       <div className="app-container">
         <div>
@@ -275,7 +299,7 @@ class App extends Component {
               />
               <div className="timer-container">
                 <p className="score">
-                  Score: <span className="score-color">0</span>
+                  Score: <span className="score-color">{0}</span>
                 </p>
                 <p className="time">
                   <img
@@ -283,7 +307,7 @@ class App extends Component {
                     alt="timer"
                     className="timer"
                   />
-                  60 Sec
+                  {count}
                 </p>
               </div>
             </div>
