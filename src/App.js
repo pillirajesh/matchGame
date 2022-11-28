@@ -251,6 +251,11 @@ const imagesList = [
 class App extends Component {
   state = {activeTabId: tabsList[0].tabId, count: 59}
 
+  getChangeActiveTabId = props => {
+    const {tabId} = props
+    this.setState({activeTabId: tabId})
+  }
+
   getFilteredList = () => {
     const {activeTabId} = this.state
 
@@ -258,14 +263,6 @@ class App extends Component {
       eachImage => eachImage.category === activeTabId,
     )
     return filteredList
-  }
-
-  getChangeActiveTabId = tabId => {
-    const {activeTabId} = this.state
-    this.setState(prevState => ({
-      activeTabId: prevState.activeTabId !== tabId,
-    }))
-    console.log((activeTabId = tabsList.tabId))
   }
 
   clearTimer = () => {
@@ -284,9 +281,14 @@ class App extends Component {
     this.timerId = setInterval(this.tick, 1000)
   }
 
+  getChangeActiveTabId = eachTab => {
+    this.setState({activeTabId: eachTab.tabId})
+  }
+
   render() {
     const {count} = this.state
     const filteredList = this.getFilteredList()
+
     return (
       <div className="app-container">
         <div>
